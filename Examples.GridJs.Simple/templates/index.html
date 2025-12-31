@@ -1,0 +1,42 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GridJs Spreadsheet Demo</title>
+
+    <!-- jQuery & UI -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet"
+          href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- JSZip (required by GridJs) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+
+    <!-- GridJs Spreadsheet UI -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/gridjs-spreadsheet/xspreadsheet.css">
+    <script src="https://unpkg.com/gridjs-spreadsheet/xspreadsheet.js"></script>
+
+    <!-- Demo helper script -->
+    <script src="{{ url_for('static', filename='js/gridjs-demo.js') }}"></script>
+
+    <style>
+        body {font-family: Arial, sans-serif; margin: 20px;}
+        #gridjs-demo-uid {border: 1px solid #ccc;}
+    </style>
+</head>
+<body>
+    <h1>GridJs Spreadsheet Demo</h1>
+
+    <!-- Container for the GridJs UI -->
+    <div id="gridjs-demo-uid"></div>
+
+    <!-- Optional: show a screenshot -->
+    <p>
+        <img src="{{ url_for('static', filename='../screenshots/gridjs_ui.png') }}"
+             alt="GridJs UI Screenshot" style="max-width:100%;">
+    </p>
+</body>
+</html>
