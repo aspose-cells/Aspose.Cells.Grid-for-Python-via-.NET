@@ -26,61 +26,14 @@
 </head>
 
     <body  >
-        <!--
-         <input type="file" name="imagef" id="imagef" >
-        <span id="status"></span> <button onclick="save()">save</button>
-        <button onclick="addimage()">add image</button>
-        <button onclick="addimagebyUrl()">add image from url</button>-->
+        
     <div id="gridjs-demo"></div>
-    <!-- <button onclick="loadmore()">next</button> -->
-    <!-- <button onclick="print()">print</button> -->
+ 
 
 
 
     <script>
-        function downLoad(url) {
-        var oA = document.createElement('a');
-            oA.download = '';// 设置下载的文件名，默认是'下载'
-            oA.href = url;
-            document.body.appendChild(oA);
-            oA.click();
-            oA.remove(); // 下载之后把创建的元素删除
-        }
-        function saveAsPNG(canvas) {
-        return canvas.toDataURL('image/png');
-            //return canvas.toDataURL("image/jpeg", 1.0);
-        }
-        function dcanvas(c){
-            downLoad( saveAsPNG(c));
-        }
-
-        function savepng() {
-        downLoad(
-          saveAsPNG(
-            document.querySelector(
-              '#gridjs-demo > div > div.x-spreadsheet-sheet > canvas'
-            )
-          )
-        );
-        }
-        function savepngwithsize(w, h) {
-        var x = document.createElement('CANVAS');
-            x.width = w;
-            x.height = h;
-            var imgdata = document.querySelector("#gridjs-demo > div > div.x-spreadsheet-sheet > canvas").getContext("2d").getImageData(0, 0, w, h);
-            var ctx = x.getContext("2d");
-            ctx.putImageData(imgdata, 0, 0);
-            downLoad(saveAsPNG(x));
-        }
-        function savepngwithsizeid(id, w, h) {
-        var x = document.createElement('CANVAS');
-            x.width = w;
-            x.height = h;
-            var imgdata = document.getElementById(id).getContext("2d").getImageData(0, 0, w, h);
-            var ctx = x.getContext("2d");
-            ctx.putImageData(imgdata, 0, 0);
-            downLoad(saveAsPNG(x));
-        }
+        
         // var vConsole = new window.VConsole();
          function getQueryVariable(variable) {
         var query = window.location.search.substring(1);
@@ -386,7 +339,9 @@
             const imageuploadurl1 = "/GridJs2/AddImage";
             const imageuploadurl2 = "/GridJs2/AddImageByURL";
             const imagecopyurl = "/GridJs2/CopyImage";        // x.spreadsheet.locale('zh-cn');
-            xs = x_spreadsheet('#gridjs-demo', option).loadData(sheets).change((cdata) => {
+			const activeSheetName = jsondata.actname;
+			// Initialise GridJs (x_spreadsheet) and bind to the container,load data and set active sheet
+            xs = x_spreadsheet('#gridjs-demo', option).loadData(sheets,activeSheetName).change((cdata) => {
                 console.log(cdata);
                 console.log(xs.validate());
             }
@@ -436,62 +391,22 @@
             xs.setOleDownloadInfo(oleDownloadUrl);
             xs.setVisibleFilter((sheet, s) => { console.log(" here we try enable visible filter for display textbox only:" + s.id + ",type:" + s.type); return (s.type === 'TextBox' && sheet.data.name === 'Sheet1 (2)') || sheet.data.name !== 'Sheet1 (2)'; });
             
-            xs.setActiveSheetByName(jsondata.actname).setActiveCell(jsondata.actrow, jsondata.actcol);
+            // ----------------------------------------------------------------
+            //  4. Set the active cell (fallback to A1 if needed)
+            // ----------------------------------------------------------------
+   
+            if (xs.getActiveSheetName() == activeSheetName)  {
+				xs.setActiveCell(jsondata.actrow, jsondata.actcol);
+            } else {
+				// Fallback – set A1 as active cell
+				xs.setActiveCell(0, 0);
+            }
             //add custom context menu items for set highlight image function
             xs.sheet.addCustomContextMenuItems([{ 'key': 'key8', 'text': 'set self defined image highlight function', 'callback': setCustomHighlighImageFunc }, { 'key': 'key9', 'text': 'use default highlight image func ', 'callback': removeCustomHighlighImageFunc }])
 
         }
 
-        function ColorReverse(OldColorValue) {
-            var OldColorValue = '0x' + OldColorValue.replace(/#/g, "");
-            var str = '000000' + (0xFFFFFF - OldColorValue).toString(16);
-            return '#' + str.substring(str.length - 6, str.length);
-        }
-        function save() {
-            if (!xs.buffer.isFinish()) {
-          alert('updating is inprogress,please try later');
-                return;
-            }
-            let datas = xs.datas;
-            delete datas.history;
-            delete datas.search;
-            delete datas.images;
-            delete datas.shapes;
-
-        var jsondata = {
-          sheetname: xs.sheet.data.name,
-          actrow: xs.sheet.data.selector.ri,
-          actcol: xs.sheet.data.selector.ci,
-          datas: xs.getUpdateDatas(),
-        };
-
-        const data = {
-          p: JSON.stringify(jsondata),
-          uid: uniqueid,
-        };
-
-
-            $.ajax({
-                url: local + '/GridJs2/Download',
-                type: 'post',
-
-                data: data,
-                success: function (datar, stutas, xhr) {
-                    console.log(datar);
-                    if (datar.startsWith('{')) {
-                        var ret = JSON.parse(datar);
-                        if (ret.err) {
-                            alert(ret.err);
-                        }
-                    } else {
-                        // window.location = local + '/GridJs2/Download2/' + datar;
-                        window.location = datar;
-                    }
-                },
-            });
-
-
-        }
+      
 
     </script>
 

@@ -25,7 +25,7 @@
     const imageuploadurl2   = "/GridJs/AddImageByURL";
     const imagecopyurl      = "/GridJs/CopyImage";
 
-    const zorder = 1000;               // Canvas Z‑order
+    const zorder = 1000;               // Canvas Zorder
     let xs;                            // GridJs instance
     const uid = generateUUID();        // Unique session id
 
@@ -44,7 +44,8 @@
             const option = {
                 updateMode: "server",
                 updateUrl: updateUrl,
-                local: "en"
+                // UI language (change as needed)
+                local: 'en',
             };
 
             loadWithOption(jsondata, option);
@@ -60,10 +61,10 @@
 
         const sheets = jsondata.data;
         const filename = jsondata.filename;
-
-        // Initialise GridJs (x_spreadsheet) and bind to the container
+        const activeSheetName = jsondata.actname;
+        // Initialise GridJs (x_spreadsheet) and bind to the container,load data and set active sheet
         xs = x_spreadsheet('#gridjs-demo-uid', option)
-            .loadData(sheets)
+            .loadData(sheets, activeSheetName)
             .updateCellError(msg => console.error(msg));
 
         // Hide the bottom sheet bar when tabs are disabled
@@ -73,17 +74,16 @@
 
         xs.setUniqueId(jsondata.uniqueid);
         xs.setFileName(filename);
-
-        // Activate the appropriate sheet & cell
-        let activeSheetName = jsondata.actname;
-        if (xs.bottombar.dataNames.includes(activeSheetName)) {
-            xs.setActiveSheetByName(activeSheetName)
-              .setActiveCell(jsondata.actrow, jsondata.actcol);
-        } else {
-            // Fallback to the first visible sheet
-            activeSheetName = xs.bottombar.dataNames[0];
-            xs.setActiveSheetByName(activeSheetName).setActiveCell(0, 0);
-        }
+    // ----------------------------------------------------------------
+    //  4. Set the active cell (fallback to A1 if needed)
+    // ----------------------------------------------------------------
+   
+    if (xs.getActiveSheetName() == activeSheetName)  {
+        xs.setActiveCell(jsondata.actrow, jsondata.actcol);
+    } else {
+        // Fallback – set A1 as active cell
+        xs.setActiveCell(0, 0);
+    }
 
         // ---------- 5. Register auxiliary URLs ----------
         xs.setImageInfo(
@@ -97,6 +97,7 @@
         xs.setFileDownloadInfo(fileDownloadUrl);
         xs.setOleDownloadInfo(oleDownloadUrl);
         xs.setOpenFileUrl("/GridJs/Index");
+
     }
 
 })(jQuery);

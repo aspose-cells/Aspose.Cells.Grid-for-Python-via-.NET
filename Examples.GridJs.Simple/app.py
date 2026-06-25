@@ -28,10 +28,12 @@ app = Flask(__name__)
 options = GridJsOptions()
 options.file_cache_directory = "./cache"           # Cache folder (must exist)
 options.base_route_name = "/GridJs"                # Base route used by the client
-gridjs_service = GridJsService(options)
+
 
 # Ensure cache folder exists
 os.makedirs(options.file_cache_directory, exist_ok=True)
+
+gridjs_service = GridJsService(options)
 
 # -------------------------------------------------------------
 # Helper: Guess MIME type from a filename
