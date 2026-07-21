@@ -346,7 +346,16 @@ if __name__ == "__main__":
             const option = {
                 updateMode: "server",
                 updateUrl: updateUrl,
-                local: "en"
+                locale: 'en', // UI language
+                mode: 'read',
+                //enable redaction feature
+                enableRedactionShape: true,
+                redactionDefaultColor: 'green',
+                redactionReasons: ['PII - Personal Information',
+					'Confidential Business',
+					'Legal Privilege',
+					'Trade Secret',
+					],
             };
 
             loadWithOption(jsondata, option);
@@ -419,9 +428,9 @@ if __name__ == "__main__":
 5. Open a browser and navigate to `http://localhost:5000/`.  
    The GridJs UI loads the workbook, and you can edit cells, insert images, download files, etc.
 
-{{% alert color="primary" %}}
-**Tip:** When testing locally, the browser automatically decompresses the gzip‑encoded JSON response from `/GridJs/LoadSpreadsheet`. No extra handling is required on the client side.
-{{% /alert %}}
+> [!TIP]
+> When testing locally, the browser automatically decompresses the gzip‑encoded JSON response from `/GridJs/LoadSpreadsheet`. No extra handling is required on the client side.
+ 
 
 ## Screenshots
 
@@ -446,9 +455,10 @@ if __name__ == "__main__":
 
 ## Further Reading
 
+* **GridJs Redaction Feature** – <https://docs.aspose.com/cells/python-net/aspose-cells-gridjs/how-to-use-redaction/>
 * **GridJs API Reference** – <https://reference.aspose.com/cells/python-net/aspose.cellsgridjs>
 * **Aspose.Cells for Python via .NET Documentation** – <https://docs.aspose.com/cells/python-net/>
-* **Demo Source** – <https://github.com/aspose-cells/Aspose.Cells.Grid-for-Java/tree/main/Examples.GridJs.Simple>
+* **Demo Source** – <https://github.com/aspose-cells/Aspose.Cells.Grid-for-Java/tree/main/Examples.GridJs.Redaction>
 * **gridjs-spreadsheet NPM Package** – <https://www.npmjs.com/package/gridjs-spreadsheet>
 
 ---
