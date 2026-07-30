@@ -1,0 +1,20 @@
+services:
+  gridjs-python-simple:
+    platform: ${GRIDJS_PYTHON_PLATFORM:-linux/amd64}
+    image: aspose-cells-gridjs-python-simple:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:${GRIDJS_PYTHON_PORT:-2022}:2022"
+    environment:
+      GRIDJS_WORKBOOK_DIR: /app/data
+      GRIDJS_CACHE_DIR: /app/cache
+      GRIDJS_WORKBOOK: sample.xlsx
+      PORT: "2022"
+    volumes:
+      - gridjs-python-simple-cache:/app/cache
+    restart: unless-stopped
+
+volumes:
+  gridjs-python-simple-cache:

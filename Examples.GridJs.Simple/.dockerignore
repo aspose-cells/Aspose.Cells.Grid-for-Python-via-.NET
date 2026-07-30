@@ -1,0 +1,13 @@
+.git
+.gitignore
+.venv
+.vscode
+node_modules
+**/node_modules
+**/.angular
+**/dist
+static/demos
+cache
+__pycache__
+*.py[cod]
+*.log

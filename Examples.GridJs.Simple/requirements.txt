@@ -1,0 +1,4 @@
+requests  
+flask
+aspose-cells-gridjs-net-python
+gunicorn>=23,<24

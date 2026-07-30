@@ -1,0 +1,12 @@
+.venv/
+node_modules/
+**/node_modules/
+**/.angular/
+**/dist/
+static/demos/
+cache/
+__pycache__/
+*.py[cod]
+*.log
+!package-lock.json
+.learnings/

@@ -1,0 +1,4 @@
+@import 'gridjs-spreadsheet/xspreadsheet.css';
+@import '../../shared/editor.css';
+
+gridjs-spreadsheet { display: block; width: 100%; }

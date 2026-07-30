@@ -1,0 +1,35 @@
+{
+  "name": "aspose-gridjs-python-simple-framework-examples",
+  "private": true,
+  "workspaces": [
+    "ClientApp/react-gridjs",
+    "ClientApp/vue-gridjs",
+    "ClientApp/angular-gridjs",
+    "ClientApp/vanilla-gridjs-npm"
+  ],
+  "scripts": {
+    "setup": "npm install --workspaces --include-workspace-root && node scripts/python.mjs setup",
+    "prestart": "npm run setup",
+    "start": "npm run build && npm run serve",
+    "serve": "node scripts/python.mjs run",
+    "dev": "concurrently --kill-others-on-fail --names backend,react,vue,angular,npm --prefix-colors blue,cyan,green,yellow,magenta \"npm:serve\" \"npm:dev:react:client\" \"npm:dev:vue:client\" \"npm:dev:angular:client\" \"npm:dev:npm:client\"",
+    "dev:react:client": "npm run dev --workspace @aspose/gridjs-react-python-simple-demo",
+    "dev:vue:client": "npm run dev --workspace @aspose/gridjs-vue-python-simple-demo",
+    "dev:angular:client": "npm run dev --workspace @aspose/gridjs-angular-python-simple-demo",
+    "dev:npm:client": "npm run dev --workspace @aspose/gridjs-vanilla-python-simple-demo",
+    "dev:react": "concurrently --kill-others-on-fail --names backend,react --prefix-colors blue,cyan \"npm:serve\" \"npm:dev:react:client\"",
+    "dev:vue": "concurrently --kill-others-on-fail --names backend,vue --prefix-colors blue,green \"npm:serve\" \"npm:dev:vue:client\"",
+    "dev:angular": "concurrently --kill-others-on-fail --names backend,angular --prefix-colors blue,yellow \"npm:serve\" \"npm:dev:angular:client\"",
+    "dev:npm": "concurrently --kill-others-on-fail --names backend,npm --prefix-colors blue,magenta \"npm:serve\" \"npm:dev:npm:client\"",
+    "build": "npm run build --workspaces --if-present",
+    "check:python": "node scripts/python.mjs check"
+  },
+  "devDependencies": {
+    "@angular/common": "22.0.8",
+    "@angular/core": "22.0.8",
+    "concurrently": "9.2.1"
+  },
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || ^26.0.0"
+  }
+}

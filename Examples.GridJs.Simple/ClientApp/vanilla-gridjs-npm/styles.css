@@ -1,0 +1,4 @@
+@import '../shared/editor.css';
+
+#spreadsheet { min-height: calc(100dvh - 64px); }
+[hidden] { display: none !important; }

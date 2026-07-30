@@ -1,0 +1,64 @@
+:root {
+  font-family: "Aptos", "Segoe UI Variable", "Segoe UI", sans-serif;
+  color: #20242a;
+  background: #f3f1ec;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+html, body, #root, #app { height: 100%; margin: 0; }
+body { overflow: hidden; }
+button, a { font: inherit; }
+
+.editor-shell {
+  height: 100dvh;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 64px minmax(0, 1fr);
+  overflow: hidden;
+  background: #f3f1ec;
+}
+.demo-bar {
+  height: 64px;
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) auto minmax(9rem, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px;
+  color: #f7f4ed;
+  background: #20242a;
+  border-bottom: 3px solid #2f7d32;
+}
+.back-link { color: #f7f4ed; text-decoration: none; width: fit-content; padding: 10px 0; }
+.back-link:hover { color: #9fd19a; }
+.back-link:focus-visible, button:focus-visible { outline: 3px solid #9fd19a; outline-offset: 3px; }
+.demo-title { display: flex; align-items: center; gap: 10px; }
+.demo-title > span:last-child { display: grid; line-height: 1.1; }
+.demo-title strong { font-size: 16px; font-weight: 650; }
+.demo-title small { margin-top: 4px; color: #bfc4cb; font-size: 12px; }
+.framework-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #2f7d32; font-weight: 800; }
+.npm-label { justify-self: end; color: #cdd1d6; font: 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.grid-stage { min-height: 0; position: relative; overflow: hidden; }
+.grid-stage > #spreadsheet,
+.grid-stage > gridjs-spreadsheet,
+.grid-stage > .gridjs-react-host,
+.grid-stage > .gridjs-vue-host {
+  display: block;
+  height: 100% !important;
+  min-height: 0;
+}
+.grid-stage .x-spreadsheet { height: 100% !important; }
+.state-panel { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; padding: 24px; text-align: center; }
+.state-panel p { max-width: 34rem; color: #626870; line-height: 1.55; }
+.loading-line { width: 12rem; height: 12px; margin: 4px; border-radius: 4px; background: #dedbd4; animation: pulse 1.2s ease-in-out infinite alternate; }
+.loading-line.wide { width: 18rem; height: 22px; }
+.error-state strong { font-size: 22px; }
+.error-state button { min-height: 44px; margin-top: 8px; padding: 0 18px; border: 0; border-radius: 7px; color: #fff; background: #a84727; cursor: pointer; transition: transform 180ms ease, background 180ms ease; }
+.error-state button:hover { background: #87391f; transform: translateY(-1px); }
+.error-state button:active { transform: translateY(1px); }
+@keyframes pulse { to { opacity: .45; } }
+@media (max-width: 640px) {
+  .demo-bar { grid-template-columns: auto 1fr; padding: 0 14px; }
+  .demo-title { justify-self: end; }
+  .npm-label { display: none; }
+}

@@ -10,6 +10,7 @@ from flask import (
     jsonify,
     Response,
     send_file,
+    send_from_directory,
     abort,
 )
 import io
@@ -20,13 +21,25 @@ import os
 # Aspose.Cells GridJs imports
 from aspose.cellsgridjs import GridJsOptions, GridJsService
 
+BASE_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
+
+
+def resolve_path(value: str) -> str:
+    if os.path.isabs(value):
+        return value
+    return os.path.join(BASE_DIRECTORY, value)
+
+
+WORKBOOK_DIRECTORY = resolve_path(os.environ.get("GRIDJS_WORKBOOK_DIR", "data"))
+DEFAULT_WORKBOOK = os.environ.get("GRIDJS_WORKBOOK", "sample.xlsx")
+CACHE_DIRECTORY = resolve_path(os.environ.get("GRIDJS_CACHE_DIR", "cache"))
 
 # -------------------------------------------------------------
 # GridJs service initialization
 # -------------------------------------------------------------
 options = GridJsOptions()
-options.file_cache_directory = "./cache"           # Cache folder (must exist)
+options.file_cache_directory = CACHE_DIRECTORY     # Cache folder (must exist)
 options.base_route_name = "/GridJs"                # Base route used by the client
 
 
@@ -47,19 +60,79 @@ def guess_mime_type_from_filename(filename: str) -> str:
 # -------------------------------------------------------------
 @app.route("/")
 def index():
+    return render_template("frameworks.html")
+
+
+@app.route("/legacy")
+def legacy():
     return render_template("index.html")
+
+
+@app.route("/health")
+def health():
+    return Response("Healthy", content_type="text/plain; charset=utf-8")
+
+
+@app.route("/content/img/<filename>")
+@app.route("/image/<filename>")
+def gridjs_status_image(filename):
+    if filename not in {"loading.gif", "updating.gif"}:
+        abort(404)
+    return send_from_directory(
+        os.path.join(app.static_folder, "content", "img"),
+        filename,
+    )
+
+
+@app.route("/demos/<framework>/")
+def framework_demo(framework):
+    if framework not in {"react", "vue", "angular", "npm"}:
+        abort(404)
+    return send_from_directory(
+        os.path.join(app.static_folder, "demos", framework),
+        "index.html",
+    )
+
+
+@app.route("/demos/<framework>/content/img/<filename>")
+def framework_demo_status_image(framework, filename):
+    if framework not in {"react", "vue", "angular", "npm"}:
+        abort(404)
+    if filename not in {"loading.gif", "updating.gif"}:
+        abort(404)
+    return send_from_directory(
+        os.path.join(app.static_folder, "content", "img"),
+        filename,
+    )
+
+
+@app.route("/demos/<framework>/<path:filename>")
+def framework_demo_asset(framework, filename):
+    if framework not in {"react", "vue", "angular", "npm"}:
+        abort(404)
+    return send_from_directory(
+        os.path.join(app.static_folder, "demos", framework),
+        filename,
+    )
 
 # -------------------------------------------------------------
 # 1️⃣ Load spreadsheet JSON (gzipped)
 # -------------------------------------------------------------
 @app.route("/GridJs/LoadSpreadsheet", methods=["GET"])
+@app.route("/GridJs2/LoadSpreadsheet", methods=["GET"])
 def load_spreadsheet():
     uid = request.args.get("uid", "")
+    filename = request.args.get("filename", DEFAULT_WORKBOOK)
+    if not uid:
+        return jsonify({"error": "uid is required"}), 400
+    if filename != os.path.basename(filename):
+        return jsonify({"error": "invalid filename"}), 400
+    workbook_path = os.path.join(WORKBOOK_DIRECTORY, filename)
     # Prepare an in‑memory gzip stream
     gzip_buffer = io.BytesIO()
     with gzip.GzipFile(fileobj=gzip_buffer, mode="w") as gz:
         # Populate the gzip stream with GridJs JSON data
-        gridjs_service.detail_stream_json_with_uid(gz, "./data/sample.xlsx", uid)
+        gridjs_service.detail_stream_json_with_uid(gz, workbook_path, uid)
     gzip_buffer.seek(0)
     return Response(
         gzip_buffer.getvalue(),
@@ -71,6 +144,7 @@ def load_spreadsheet():
 # 2️⃣ Update a cell (POST)
 # -------------------------------------------------------------
 @app.route("/GridJs/UpdateCell", methods=["POST"])
+@app.route("/GridJs2/UpdateCell", methods=["POST"])
 def update_cell():
     p = request.form.get("p")
     uid = request.form.get("uid")
@@ -81,6 +155,7 @@ def update_cell():
 # 3️⃣ Add image (multipart/form‑data)
 # -------------------------------------------------------------
 @app.route("/GridJs/AddImage", methods=["POST"])
+@app.route("/GridJs2/AddImage", methods=["POST"])
 def add_image():
     uid = request.form.get("uid")
     p = request.form.get("p")
@@ -94,6 +169,7 @@ def add_image():
 # 4️⃣ Copy image
 # -------------------------------------------------------------
 @app.route("/GridJs/CopyImage", methods=["POST"])
+@app.route("/GridJs2/CopyImage", methods=["POST"])
 def copy_image():
     uid = request.form.get("uid")
     p = request.form.get("p")
@@ -104,6 +180,7 @@ def copy_image():
 # 5️⃣ Add image by external URL
 # -------------------------------------------------------------
 @app.route("/GridJs/AddImageByURL", methods=["POST"])
+@app.route("/GridJs2/AddImageByURL", methods=["POST"])
 def add_image_by_url():
     uid = request.form.get("uid")
     p = request.form.get("p")
@@ -115,6 +192,7 @@ def add_image_by_url():
 # 6️⃣ Retrieve an image (GET)
 # -------------------------------------------------------------
 @app.route("/GridJs/Image", methods=["GET"])
+@app.route("/GridJs2/Image", methods=["GET"])
 def image():
     img_id = request.args.get("id")
     uid = request.args.get("uid")
@@ -132,6 +210,7 @@ def image():
 # 7️⃣ Retrieve an embedded OLE object (GET)
 # -------------------------------------------------------------
 @app.route("/GridJs/Ole", methods=["GET"])
+@app.route("/GridJs2/Ole", methods=["GET"])
 def ole():
     obj_id = request.args.get("id")
     uid = request.args.get("uid")
@@ -151,6 +230,7 @@ def ole():
 # 8️⃣ Batch image URLs (GET)
 # -------------------------------------------------------------
 @app.route("/GridJs/ImageUrl", methods=["GET"])
+@app.route("/GridJs2/ImageUrl", methods=["GET"])
 def image_url():
     img_id = request.args.get("id")
     uid = request.args.get("uid")
@@ -161,6 +241,7 @@ def image_url():
 # 9️⃣ Download cached file (GET)
 # -------------------------------------------------------------
 @app.route("/GridJs/GetFile", methods=["GET"])
+@app.route("/GridJs2/GetFile", methods=["GET"])
 def get_file():
     file_id = request.args.get("id")
     file_bytes = gridjs_service.get_file(file_id)
@@ -175,6 +256,7 @@ def get_file():
 # 🔟 Trigger file download (POST)
 # -------------------------------------------------------------
 @app.route("/GridJs/Download", methods=["POST"])
+@app.route("/GridJs2/Download", methods=["POST"])
 def download():
     p = request.form.get("p")
     uid = request.form.get("uid")
@@ -186,5 +268,8 @@ def download():
 # Application entry point
 # -------------------------------------------------------------
 if __name__ == "__main__":
-    # Listen on all interfaces as required
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", "2022")),
+        debug=os.environ.get("FLASK_DEBUG", "").lower() in {"1", "true", "yes"},
+    )

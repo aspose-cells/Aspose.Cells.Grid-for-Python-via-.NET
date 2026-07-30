@@ -1,0 +1,30 @@
+{
+  "name": "@aspose/gridjs-angular-python-simple-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "ng serve --host 127.0.0.1 --port 4200 --proxy-config proxy.conf.json",
+    "build": "ng build --base-href /demos/angular/"
+  },
+  "dependencies": {
+    "@angular/common": "22.0.8",
+    "@angular/compiler": "22.0.8",
+    "@angular/core": "22.0.8",
+    "@angular/platform-browser": "22.0.8",
+    "gridjs-spreadsheet": "26.7.1",
+    "jszip": "3.10.1",
+    "rxjs": "7.8.1",
+    "tslib": "2.6.2",
+    "zone.js": "0.16.2"
+  },
+  "devDependencies": {
+    "@angular/build": "22.0.8",
+    "@angular/cli": "22.0.8",
+    "@angular/compiler-cli": "22.0.8",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || ^26.0.0"
+  }
+}

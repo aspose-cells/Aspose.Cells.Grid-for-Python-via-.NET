@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GridJs Spreadsheet Demo</title>
+    <title>GridJS JavaScript CDN Demo</title>
+    <link rel="icon" href="{{ url_for('static', filename='frameworks/aspose-logo.svg') }}" type="image/svg+xml">
 
     <!-- jQuery & UI -->
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -28,15 +29,10 @@
     </style>
 </head>
 <body>
-    <h1>GridJs Spreadsheet Demo</h1>
+    <h1>GridJS JavaScript &lt;script&gt; / CDN Demo</h1>
+    <p>This page uses the browser build from <code>unpkg.com/gridjs-spreadsheet</code>; npm is not required.</p>
 
     <!-- Container for the GridJs UI -->
     <div id="gridjs-demo-uid"></div>
-
-    <!-- Optional: show a screenshot -->
-    <p>
-        <img src="{{ url_for('static', filename='../screenshots/gridjs_ui.png') }}"
-             alt="GridJs UI Screenshot" style="max-width:100%;">
-    </p>
 </body>
 </html>

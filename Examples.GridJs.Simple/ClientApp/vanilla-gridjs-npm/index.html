@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Aspose.Cells GridJS vanilla npm example backed by Flask and Python via .NET." />
+    <title>GridJS npm example · Python via .NET</title>
+  </head>
+  <body>
+    <main class="editor-shell">
+      <header class="demo-bar">
+        <a id="back-link" class="back-link" href="/" aria-label="Back to framework examples">← Examples</a>
+        <div class="demo-title">
+          <span class="framework-mark" aria-hidden="true">JS</span>
+          <span><strong>JavaScript</strong><small>sample.xlsx</small></span>
+        </div>
+        <span class="npm-label">npm import</span>
+      </header>
+      <section id="grid-stage" class="grid-stage" aria-live="polite">
+        <div id="loading-state" class="state-panel loading-state" role="status">
+          <span class="loading-line wide"></span>
+          <span class="loading-line"></span>
+          <p>Loading workbook from Flask…</p>
+        </div>
+        <div id="error-state" class="state-panel error-state" role="alert" hidden>
+          <strong>Workbook could not be loaded</strong>
+          <p id="error-message"></p>
+          <button id="retry-button" type="button">Retry loading</button>
+        </div>
+        <div id="spreadsheet"></div>
+      </section>
+    </main>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

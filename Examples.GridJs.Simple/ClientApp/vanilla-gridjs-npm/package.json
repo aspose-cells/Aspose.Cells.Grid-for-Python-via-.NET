@@ -1,0 +1,20 @@
+{
+  "name": "@aspose/gridjs-vanilla-python-simple-demo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5175 --strictPort",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "gridjs-spreadsheet": "26.7.1",
+    "jszip": "3.10.1"
+  },
+  "devDependencies": {
+    "vite": "5.4.14"
+  },
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || ^26.0.0"
+  }
+}

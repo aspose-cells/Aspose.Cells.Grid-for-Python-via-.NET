@@ -1,0 +1,35 @@
+<main class="editor-shell">
+  <header class="demo-bar">
+    <a class="back-link" [href]="launcherUrl" aria-label="Back to framework examples">← Examples</a>
+    <div class="demo-title">
+      <span class="framework-mark" aria-hidden="true">A</span>
+      <span><strong>Angular</strong><small>{{ workbookName }}</small></span>
+    </div>
+    <span class="npm-label">npm component</span>
+  </header>
+
+  <section class="grid-stage" aria-live="polite">
+    <div *ngIf="!workbook() && !error()" class="state-panel loading-state" role="status">
+      <span class="loading-line wide"></span>
+      <span class="loading-line"></span>
+      <p>Loading workbook from Flask…</p>
+    </div>
+    <div *ngIf="error()" class="state-panel error-state" role="alert">
+      <strong>Workbook could not be loaded</strong>
+      <p>{{ error() }}</p>
+      <button type="button" (click)="loadWorkbook()">Retry loading</button>
+    </div>
+    <gridjs-spreadsheet
+      *ngIf="workbook()"
+      [data]="workbook()"
+      height="calc(100dvh - 64px)"
+      mode="edit"
+      locale="en"
+      [showToolbar]="true"
+      [showContextmenu]="true"
+      (ready)="handleReady($event)"
+      (change)="logChange()"
+      (error)="handleError($event)"
+    ></gridjs-spreadsheet>
+  </section>
+</main>
