@@ -281,13 +281,13 @@ def add_image_by_url():
 def image():
     fileid = request.args.get('id')
     uid = request.args.get('uid')
-
+    gwb = GridJsWorkbook()
     if fileid is None or uid is None:
         # if required parameters are missing, return an error response  
         return 'Missing required parameters', 400
     else:
         # retrieve the image stream  
-        image_stream = GridJsWorkbook.get_image_stream(uid, fileid)
+        image_stream = GridJsWorkbook.get_image_stream(uid, fileid,gwb.cache_directory)
 
          # set the MIME type and attachment filename for the response (if needed)
         mimetype = 'image/png'
