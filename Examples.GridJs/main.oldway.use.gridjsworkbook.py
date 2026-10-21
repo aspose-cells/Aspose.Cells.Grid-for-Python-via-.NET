@@ -93,7 +93,7 @@ def detail_stream_json():
 
         output = io.BytesIO()
         with gzip.GzipFile(fileobj=output, mode='wb', compresslevel=9) as gzip_stream:
-            wbj.json_to_stream(gzip_stream, filename)
+            wbj.json_to_stream(gzip_stream, filename, GridJsWorkbook.get_uid_for_file(filename))
 
         response = Response(output.getvalue(), mimetype='application/json')
         response.headers['Content-Encoding'] = 'gzip'
@@ -124,7 +124,7 @@ def detail_stream_json_with_uid():
             is_done  = wbj.json_to_stream_by_uid(gzip_stream,uid, filename)
             if not is_done:
                 wbj.import_excel_file(uid,file_path)
-                wbj.json_to_stream(gzip_stream, filename)
+                wbj.json_to_stream(gzip_stream, filename, uid)
 
         response = Response(output.getvalue(), mimetype='application/json')
         response.headers['Content-Encoding'] = 'gzip'

@@ -145,7 +145,7 @@ def add_image():
     file = request.files.get('image')  # 使用 get() 避免 KeyError
     file_bytes = io.BytesIO(file.read()) if file else None
     ret = gridjs_service.add_image(p, uid, iscontrol, file_bytes)
-                return jsonify(ret)
+    return jsonify(ret)
 
 
 # copy image :/GridJs2/CopyImage
@@ -168,7 +168,7 @@ def add_image_by_url():
     p = request.form.get('p')
     imageurl = request.form.get('imageurl')
     ret = gridjs_service.add_image_by_url(p, uid, imageurl)
-        return jsonify(ret)
+    return jsonify(ret)
 
 
 # get image :/GridJs2/Image
